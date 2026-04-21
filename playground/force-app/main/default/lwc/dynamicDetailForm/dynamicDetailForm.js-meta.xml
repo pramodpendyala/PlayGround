@@ -7,6 +7,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
+            <property name="objectApiName" type="String" label="Override Object API Name" />
             <objects>
               <object>Account</object>
             </objects>
