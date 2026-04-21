@@ -1,0 +1,22 @@
+<template>
+    <lightning-card title="Dynamic Managed Form" icon-name="standard:record">
+        <template if:true={fields}>
+            <lightning-record-edit-form
+                object-api-name={objectApiName}
+                record-id={recordId}
+                onsuccess={handleSuccess}>
+                <lightning-messages></lightning-messages>
+                <div class="slds-grid slds-wrap">
+                    <template for:each={fields} for:item="fName">
+                        <div key={fName} class="slds-col slds-size_1-of-1 slds-p-around_x-small">
+                            <lightning-input-field field-name={fName}></lightning-input-field>
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-m-top_medium">
+                    <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                </div>
+            </lightning-record-edit-form>
+        </template>
+    </lightning-card>
+</template>
