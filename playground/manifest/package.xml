@@ -4,10 +4,14 @@
 		<members>DynamicDetailFormController</members>
 		<name>ApexClass</name>
 	</types>
+    	<types>
+		<members>dynamicDetailForm</members>
+		<name>LightningComponentBundle</name>
+	</types>
 	<types>
 		<members>Dynamic_Details_Config__mdt.Field_API_Name__c</members>
 		<members>Dynamic_Details_Config__mdt.LWC_Name__c</members>
-		<members>Dynamic_Details_Config__mdt.Object_API_Name_c__c</members>
+		<members>Dynamic_Details_Config__mdt.Object_API_Name__c</members>
 		<members>Dynamic_Details_Config__mdt.Order__c</members>
 		<members>Dynamic_Details_Config__mdt.Row__c</members>
 		<members>Dynamic_Details_Config__mdt.Type__c</members>
