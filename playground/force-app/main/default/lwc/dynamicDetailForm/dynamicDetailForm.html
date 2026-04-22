@@ -1,10 +1,6 @@
 <template>
     <lightning-card title="Dynamic Metadata Form" icon-name="standard:record">
-        <lightning-button 
-            slot="actions" 
-            label={modeButtonLabel} 
-            onclick={toggleMode}>
-        </lightning-button>
+        
 
         <div class="slds-p-horizontal_medium">
             <lightning-record-edit-form 
@@ -37,10 +33,16 @@
                                             </template>
                                             
                                             <template if:false={field.isSpacer}>
+                                                 <template if:false={isReadOnly}>
                                                 <div onclick={handleFieldClick} onchange={handleFieldChange} data-field={field.apiName} class="field-container">
                                                     <lightning-input-field field-name={field.apiName} data-field={field.apiName} variant="label-stacked">
                                                     </lightning-input-field>
                                                 </div>
+                                                </template>
+                                                 <template if:true={isReadOnly}>
+                                                    <lightning-output-field field-name={field.apiName} data-field={field.apiName} variant="label-stacked">
+                                                    </lightning-output-field>
+                                                 </template>
                                             </template>
 
                                         </lightning-layout-item>
@@ -57,8 +59,18 @@
                         <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
                     </div>
                 </template>
+                <template if:true={isReadOnly}>
+                    <div class="slds-m-top_medium slds-text-align_center">
+                        <lightning-button 
+            slot="actions" 
+            label={modeButtonLabel} 
+            onclick={toggleMode}>
+        </lightning-button>
+                    </div>
+                </template>
 
             </lightning-record-edit-form>
         </div>
+        
     </lightning-card>
 </template>

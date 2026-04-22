@@ -9,6 +9,7 @@ export default class DynamicDetailForm extends LightningElement {
     error;
 
     @track isReadOnly = true; // Default to View mode
+    
     activeSections = [];
 
     // Computed property for the button label
@@ -172,7 +173,26 @@ export default class DynamicDetailForm extends LightningElement {
 
 
     handleSuccess() {
+        this.dispatchEvent(
+            new ShowToastEvent({
+                title: 'Success',
+                message: 'Record updated successfully',
+                variant: 'success'
+            })
+        );
         // Switch back to view mode after a successful save
+        this.isReadOnly = true;
+    }
+
+    handleCancel() {
+        // 1. Reset all fields to original values
+        const inputFields = this.template.querySelectorAll('lightning-input-field');
+        if (inputFields) {
+            inputFields.forEach(field => {
+                field.reset();
+            });
+        }
+        // 2. Force the form back to view mode state
         this.isReadOnly = true;
     }
 }
