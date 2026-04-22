@@ -4,10 +4,6 @@
 		<members>DynamicDetailFormController</members>
 		<name>ApexClass</name>
 	</types>
-    	<types>
-		<members>dynamicDetailForm</members>
-		<name>LightningComponentBundle</name>
-	</types>
 	<types>
 		<members>Dynamic_Details_Config__mdt.Field_API_Name__c</members>
 		<members>Dynamic_Details_Config__mdt.LWC_Name__c</members>
@@ -20,6 +16,14 @@
 	<types>
 		<members>Dynamic_Details_Config__mdt</members>
 		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>dynamicDetailForm</members>
+		<name>LightningComponentBundle</name>
+	</types>
+	<types>
+		<members>Dynamic_Details_Config__mdt.Detail</members>
+		<name>ListView</name>
 	</types>
 	<version>66.0</version>
 </Package>

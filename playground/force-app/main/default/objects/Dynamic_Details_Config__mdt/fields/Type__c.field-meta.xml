@@ -24,6 +24,11 @@
                 <default>false</default>
                 <label>Section</label>
             </value>
+            <value>
+                <fullName>Space</fullName>
+                <default>false</default>
+                <label>Space</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
