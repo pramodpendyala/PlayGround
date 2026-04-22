@@ -1,9 +1,22 @@
 <template>
     <lightning-card title="Dynamic Metadata Form" icon-name="standard:record">
+        <lightning-button 
+            slot="actions" 
+            label={modeButtonLabel} 
+            onclick={toggleMode}>
+        </lightning-button>
+
         <div class="slds-p-horizontal_medium">
-            <lightning-record-edit-form record-id={recordId} object-api-name={objectApiName}>
+            <lightning-record-edit-form 
+                record-id={recordId} 
+                object-api-name={objectApiName}
+                mode={formMode}
+                onsuccess={handleSuccess}>
                 
-                <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                <lightning-accordion 
+                    allow-multiple-sections-open 
+                    active-section-name={activeSections}>
+                    
                     <template for:each={formLayout} for:item="section">
                         <lightning-accordion-section key={section.id} name={section.id} label={section.label}>
                             
@@ -39,9 +52,12 @@
                     </template>
                 </lightning-accordion>
 
-                <div class="slds-m-top_medium slds-text-align_center">
-                    <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
-                </div>
+                <template if:false={isReadOnly}>
+                    <div class="slds-m-top_medium slds-text-align_center">
+                        <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
+                    </div>
+                </template>
+
             </lightning-record-edit-form>
         </div>
     </lightning-card>

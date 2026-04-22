@@ -1,4 +1,4 @@
-import { LightningElement, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 import { gql, graphql } from 'lightning/uiGraphQLApi';
 
 export default class DynamicDetailForm extends LightningElement {
@@ -7,6 +7,23 @@ export default class DynamicDetailForm extends LightningElement {
 
     formLayout;
     error;
+
+    @track isReadOnly = true; // Default to View mode
+    activeSections = [];
+
+    // Computed property for the button label
+    get modeButtonLabel() {
+        return this.isReadOnly ? 'Edit Form' : 'Cancel';
+    }
+
+    // Computed property for the form mode
+    get formMode() {
+        return this.isReadOnly ? 'view' : 'edit';
+    }
+
+    toggleMode() {
+        this.isReadOnly = !this.isReadOnly;
+    }
 
 // GraphQL Query to fetch metadata
     @wire(graphql, {
@@ -53,7 +70,6 @@ export default class DynamicDetailForm extends LightningElement {
         };
     }
 
-    activeSections = [];
     // Transformation logic (Replacement for Apex logic)
     transformMetadata(records) {
     const sections = [];
@@ -155,5 +171,8 @@ export default class DynamicDetailForm extends LightningElement {
     }
 
 
-
+    handleSuccess() {
+        // Switch back to view mode after a successful save
+        this.isReadOnly = true;
+    }
 }
