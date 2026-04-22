@@ -53,10 +53,12 @@ export default class DynamicDetailForm extends LightningElement {
         };
     }
 
+    activeSections = [];
     // Transformation logic (Replacement for Apex logic)
     transformMetadata(records) {
     const sections = [];
     let currentSection = null;
+    const sectionIds = []; // Local array to collect IDs
 
     records.forEach(rec => {
         const rowNum = rec.Row__c.value;
@@ -66,6 +68,7 @@ export default class DynamicDetailForm extends LightningElement {
         const label = rec.MasterLabel.value;
 
         if (type === 'Section') {
+            const sectionId = `section-${rowNum}`;
             // Create a new Section object
             currentSection = {
                 id: `section-${rowNum}`,
@@ -76,6 +79,7 @@ export default class DynamicDetailForm extends LightningElement {
                 rows: [] // This will hold the fields/rows for this section
             };
             sections.push(currentSection);
+            sectionIds.push(sectionId); // Track this ID for expansion
         } else {
             // If no section has been defined yet, create a default "General" section
             if (!currentSection) {
@@ -97,7 +101,7 @@ export default class DynamicDetailForm extends LightningElement {
             }
         }
     });
-
+    this.activeSections = sectionIds;
     return sections;
 }
 
