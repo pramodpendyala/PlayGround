@@ -55,54 +55,51 @@ export default class DynamicDetailForm extends LightningElement {
 
     // Transformation logic (Replacement for Apex logic)
     transformMetadata(records) {
-        const rowMap = new Map();
+    const sections = [];
+    let currentSection = null;
 
-        records.forEach(rec => {
-            const rowNum = rec.Row__c.value;
-            const type = rec.Type__c.value;
-            const fieldApi = rec.Field_API_Name__c.value;
-            const lwcName = rec.LWC_Name__c.value;
-            const label = rec.MasterLabel.value;
+    records.forEach(rec => {
+        const rowNum = rec.Row__c.value;
+        const type = rec.Type__c.value;
+        const fieldApi = rec.Field_API_Name__c.value;
+        const lwcName = rec.LWC_Name__c.value;
+        const label = rec.MasterLabel.value;
 
-            if (!rowMap.has(rowNum)) {
-                rowMap.set(rowNum, {
-                    rowNumber: rowNum,
-                    fields: [],
-                    isSection: false,
-                    Section: null
-                });
+        if (type === 'Section') {
+            // Create a new Section object
+            currentSection = {
+                id: `section-${rowNum}`,
+                label: label,
+                hasHeaders: (fieldApi && fieldApi.trim() !== '') || (lwcName && lwcName.trim() !== ''),
+                headerLeft: fieldApi,
+                headerRight: lwcName,
+                rows: [] // This will hold the fields/rows for this section
+            };
+            sections.push(currentSection);
+        } else {
+            // If no section has been defined yet, create a default "General" section
+            if (!currentSection) {
+                currentSection = { id: 'default', label: 'General', rows: [] };
+                sections.push(currentSection);
             }
 
-            const currentRow = rowMap.get(rowNum);
-
-            if (type === 'Section') {
-                currentRow.isSection = true;
-                const hasHeaders = (fieldApi && fieldApi.trim() !== '') || (lwcName && lwcName.trim() !== '');
-
-                currentRow.Section = {
-                    sectionLabel: label,
-                    sectionHeaderLeft: fieldApi,
-                    sectionHeaderRight: lwcName,
-                    hasHeaders: hasHeaders
-                };
+            // Find or create the row within the current section
+            let row = currentSection.rows.find(r => r.rowNumber === rowNum);
+            if (!row) {
+                row = { rowNumber: rowNum, fields: [] };
+                currentSection.rows.push(row);
             }
-            else if (type === 'Field') {
-                currentRow.fields.push({
-                    apiName: fieldApi,
-                    isSpacer: false
-                });
-            }
-            else if (type === 'Space') {
-                currentRow.fields.push({
-                    apiName: `spacer-${rowNum}-${currentRow.fields.length}`,
-                    isSpacer: true
-                });
-            }
-        });
 
-        console.log("==", JSON.stringify(rowMap));
-        return Array.from(rowMap.values());
-    }
+            if (type === 'Field') {
+                row.fields.push({ apiName: fieldApi, isSpacer: false });
+            } else if (type === 'Space') {
+                row.fields.push({ apiName: `spacer-${rowNum}-${row.fields.length}`, isSpacer: true });
+            }
+        }
+    });
+
+    return sections;
+}
 
     handleFieldClick(event) {
         // Identify which field was clicked using the data attribute

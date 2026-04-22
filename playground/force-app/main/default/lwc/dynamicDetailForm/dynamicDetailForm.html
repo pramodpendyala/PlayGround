@@ -1,43 +1,43 @@
 <template>
     <lightning-card title="Dynamic Metadata Form" icon-name="standard:record">
         <div class="slds-p-horizontal_medium">
-            <lightning-record-edit-form
-                record-id={recordId}
-                object-api-name={objectApiName}>
-                <template for:each={formLayout} for:item="row">
-
-                    <template if:true={row.isSection}>
-                        <div key={row.rowNumber} class="slds-section slds-is-open slds-m-top_small">
-                            <h3 class="slds-section__title slds-theme_shade">
-                                <span class="slds-truncate slds-p-horizontal_small" title={row.Section.sectionLabel}>
-                                    {row.Section.sectionLabel}
-                                </span>
-                            </h3>
-                    <template if:true={row.Section.hasHeaders}>
-                            <lightning-layout-item size="6" padding="around-small">{row.Section.sectionHeaderLeft} </lightning-layout-item>
-                            <lightning-layout-item size="6" padding="around-small">{row.Section.sectionHeaderRight} </lightning-layout-item>
-                    </template>
-                        </div>
-                    </template>
-
-                    <template if:false={row.isSection}>
-                        <lightning-layout key={row.rowNumber} multiple-rows>
-                            <template for:each={row.fields} for:item="field">
-                                <lightning-layout-item key={field.apiName} size="6" padding="around-small">
-                                    <template if:true={field.isSpacer}>
-                                        <div class="slds-p-around_medium"></div>
-                                    </template>
-                                    <template if:false={field.isSpacer}>
-                                        <div onclick={handleFieldClick} onchange={handleFieldChange} data-field={field.apiName} class="field-container">
-                                            <lightning-input-field  field-name={field.apiName} data-field={field.apiName} variant="label-stacked"> </lightning-input-field>
-                                        </div>
-                                    </template>
-                                </lightning-layout-item>
+            <lightning-record-edit-form record-id={recordId} object-api-name={objectApiName}>
+                
+                <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                    <template for:each={formLayout} for:item="section">
+                        <lightning-accordion-section key={section.id} name={section.id} label={section.label}>
+                            
+                            <template if:true={section.hasHeaders}>
+                                <lightning-layout class="slds-theme_shade slds-m-bottom_small">
+                                    <lightning-layout-item size="6" padding="around-small"><strong>{section.headerLeft}</strong></lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small"><strong>{section.headerRight}</strong></lightning-layout-item>
+                                </lightning-layout>
                             </template>
-                        </lightning-layout>
-                    </template>
 
-                </template>
+                            <template for:each={section.rows} for:item="row">
+                                <lightning-layout key={row.rowNumber} multiple-rows>
+                                    <template for:each={row.fields} for:item="field">
+                                        <lightning-layout-item key={field.apiName} size="6" padding="around-small">
+                                            
+                                            <template if:true={field.isSpacer}>
+                                                <div class="slds-p-around_medium"></div>
+                                            </template>
+                                            
+                                            <template if:false={field.isSpacer}>
+                                                <div onclick={handleFieldClick} onchange={handleFieldChange} data-field={field.apiName} class="field-container">
+                                                    <lightning-input-field field-name={field.apiName} data-field={field.apiName} variant="label-stacked">
+                                                    </lightning-input-field>
+                                                </div>
+                                            </template>
+
+                                        </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+                            </template>
+
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
 
                 <div class="slds-m-top_medium slds-text-align_center">
                     <lightning-button type="submit" variant="brand" label="Save"></lightning-button>
